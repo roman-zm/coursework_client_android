@@ -31,6 +31,7 @@ class AdminFragment : CourseworkFragment(), AdminView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecycler()
+        addButton.setOnClickListener { listener.openFilmFragment(null) }
         presenter.loadFilmList()
     }
 
