@@ -13,7 +13,8 @@ data class Film(
         val year: Int,
         val actors: String,
         val price: Double,
-        val duration: String
+        val duration: String,
+        val genres: Set<Genre> = setOf()
 ): DiffUtilable, Parcelable {
     override fun <T : DiffUtilable?> areContentsTheSame(rItem: T) =
             hashForDiff() == rItem?.hashForDiff() ?: 0

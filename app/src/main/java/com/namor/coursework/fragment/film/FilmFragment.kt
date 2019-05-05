@@ -80,6 +80,14 @@ class FilmFragment : MvpAppCompatFragment(), FilmEditView {
     }
 
     private fun createFilmModel() = try {
+        val name = nameEdit.text?.toString()
+        val director = directorEdit.text?.toString()
+        val year = yearEdit.text?.toString()
+        val actors = actorsEdit?.text?.toString()
+        val price = priceEdit?.text?.toString()
+        val duration = durationEdit?.text?.toString()
+
+
         Film(
                 -1,
                 nameEdit.text?.toString() ?: throw IllegalStateException(),
