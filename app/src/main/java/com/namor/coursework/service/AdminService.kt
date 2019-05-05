@@ -2,6 +2,7 @@ package com.namor.coursework.service
 
 import com.namor.coursework.domain.Administrator
 import com.namor.coursework.domain.Film
+import com.namor.coursework.domain.Genre
 import com.namor.coursework.domain.Page
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -23,6 +24,12 @@ interface AdminService {
 
     @GET("administrators/{login}")
     fun getAdmin(@Path("login") login: String): Single<Administrator>
+
+    @GET("genres")
+    fun getGenres(): Single<Page<Genre>>
+
+    @GET("filmGenres/search/deleteAllByFilm")
+    fun deleteFilmGenres(@Query("film") film: Int): Completable
 }
 
 interface UserService {

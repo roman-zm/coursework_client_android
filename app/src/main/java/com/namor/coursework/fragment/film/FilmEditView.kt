@@ -15,4 +15,7 @@ interface FilmEditView: MvpView {
 
     fun showError(localizedMessage: String?)
     fun close()
+
+    @StateStrategyType(AddToEndSingleStrategy::class)
+    fun setPredictions(predictions: Array<String>)
 }

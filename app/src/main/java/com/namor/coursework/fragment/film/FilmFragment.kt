@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.view.isVisible
 import com.arellomobile.mvp.MvpAppCompatFragment
@@ -62,6 +63,8 @@ class FilmFragment : MvpAppCompatFragment(), FilmEditView {
 
         deleteButton.setOnClickListener { presenter.deleteFilm() }
         doneButton.setOnClickListener { presenter.uploadFilm(createFilmModel()) }
+
+        chipsText.setText(film.genres.map { it.name }.toList())
     }
 
     override fun initForNewFilm() {
@@ -79,6 +82,13 @@ class FilmFragment : MvpAppCompatFragment(), FilmEditView {
         activity?.onBackPressed()
     }
 
+    override fun setPredictions(predictions: Array<String>) {
+        val adapter = ArrayAdapter<String>(
+                context, android.R.layout.simple_dropdown_item_1line, predictions
+        )
+        chipsText.setAdapter(adapter)
+    }
+
     private fun createFilmModel() = try {
         val name = nameEdit.text?.toString()
         val director = directorEdit.text?.toString()
@@ -87,6 +97,7 @@ class FilmFragment : MvpAppCompatFragment(), FilmEditView {
         val price = priceEdit?.text?.toString()
         val duration = durationEdit?.text?.toString()
 
+        val genresSet = presenter.getGenresSet(chipsText.chipValues)
 
         Film(
                 -1,
@@ -96,7 +107,8 @@ class FilmFragment : MvpAppCompatFragment(), FilmEditView {
                 yearEdit.text?.toString()?.toIntOrNull() ?: throw IllegalStateException(),
                 actorsEdit?.text?.toString() ?: throw IllegalStateException(),
                 priceEdit?.text?.toString()?.toDoubleOrNull() ?: throw IllegalStateException(),
-                durationEdit?.text?.toString() ?: throw IllegalStateException()
+                durationEdit?.text?.toString() ?: throw IllegalStateException(),
+                genresSet
         )
     } catch (throwable: Throwable) {
         throwable.printStackTrace()

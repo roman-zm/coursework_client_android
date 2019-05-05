@@ -3,12 +3,15 @@ package com.namor.coursework.fragment.film
 import com.arellomobile.mvp.InjectViewState
 import com.namor.coursework.App
 import com.namor.coursework.domain.Film
+import com.namor.coursework.domain.Genre
 import com.namor.coursework.fragment.BasePresenter
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 @InjectViewState
 class FilmEditPresenter: BasePresenter<FilmEditView>() {
+    private var genres: List<Genre> = listOf()
     private var film: Film? = null
 
     fun loadFilm(film: Film?) {
@@ -22,16 +25,60 @@ class FilmEditPresenter: BasePresenter<FilmEditView>() {
         } else {
             viewState.initForNewFilm()
         }
+        initPredictions()
     }
+
+    private fun initPredictions() {
+        App.service.adminService?.getGenres()
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe(::setPredictions, ::onServiceError)
+                ?.let { compositeDisposable += it }
+    }
+
+    private fun setPredictions(genres: List<Genre>) {
+        this.genres = genres
+        val predictions = createPredictionsArray(genres)
+        viewState.setPredictions(predictions)
+    }
+
+    private fun createPredictionsArray(genres: List<Genre>): Array<String> =
+            genres.map { it.name }.toTypedArray()
 
     private fun updateFilm(id: Int, film: Film) {
         val admin = App.currentAdmin?.login ?: ""
         val f = film.copy(loginAdmin = admin, id = id)
-        App.service.adminService?.updateFilm(id, f)
+
+//        Single.fromCallable {
+//            App.service.adminService?.deleteFilmGenres(id)
+//            App.service.adminService?.updateFilm(id, f)
+//        }.subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe({ complete() }, ::onServiceError)
+//                .let { compositeDisposable += it }
+
+
+        val delete = App.service.adminService?.deleteFilmGenres(id)
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe({ complete() }, ::onServiceError)
+
+        val update = App.service.adminService?.updateFilm(id, f)
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+
+        if (this.film?.genres?.isNotEmpty() == true) {
+            delete?.andThen(update)
+                    ?.onErrorResumeNext { update }
+        } else {
+            update
+        }?.subscribe({ complete() }, ::onServiceError)
                 ?.let { compositeDisposable += it }
+
+//        App.service.adminService?.updateFilm(id, f)
+//                ?.subscribeOn(Schedulers.io())
+//                ?.observeOn(AndroidSchedulers.mainThread())
+//                ?.subscribe({ complete() }, ::onServiceError)
+//                ?.let { compositeDisposable += it }
     }
 
     fun deleteFilm() {
@@ -77,5 +124,8 @@ class FilmEditPresenter: BasePresenter<FilmEditView>() {
                 ?.subscribe({ complete() }, ::onServiceError)
                 ?.let { compositeDisposable += it }
     }
+
+    fun getGenresSet(chipValues: List<String>): Set<Genre> =
+            genres.filter { it.name in chipValues }.toSet()
 
 }
