@@ -8,6 +8,7 @@ import com.namor.coursework.domain.Film
 import com.namor.coursework.domain.Page
 import com.namor.coursework.service.AdminService
 import com.namor.coursework.service.PageDeserializer
+import com.namor.coursework.service.UserService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -23,6 +24,9 @@ class ServiceHolder {
     var adminService: AdminService? = null
         private set
 
+    var userService: UserService? = null
+        private set
+
     fun setUrlAndInit(url: String): Boolean {
         if (adminService != null) return true
 
@@ -33,7 +37,8 @@ class ServiceHolder {
                 .build()
 
         adminService = retrofit?.create(AdminService::class.java)
+        userService = retrofit?.create(UserService::class.java)
 
-        return adminService != null
+        return adminService != null && userService != null
     }
 }

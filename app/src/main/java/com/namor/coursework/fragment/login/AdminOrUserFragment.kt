@@ -11,6 +11,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.namor.coursework.MainListener
 import com.namor.coursework.R
 import com.namor.coursework.domain.Administrator
+import com.namor.coursework.domain.User
 import com.namor.coursework.fragment.CourseworkFragment
 import kotlinx.android.synthetic.main.fragment_admin_or_user.*
 
@@ -25,10 +26,6 @@ class AdminOrUserFragment : CourseworkFragment(), LoginView {
     @InjectPresenter
     lateinit var presenter: LoginPresenter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -38,6 +35,13 @@ class AdminOrUserFragment : CourseworkFragment(), LoginView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adminButton.setOnClickListener { onAdminLogin() }
+        userButton.setOnClickListener { onUserLoginOrRegister() }
+    }
+
+    private fun onUserLoginOrRegister() {
+        if (presenter.setHomeUrl(urlTextEdit.text)) {
+            presenter.onUserLogin(loginTextEdit.text)
+        }
     }
 
     private fun onAdminLogin() {
@@ -52,6 +56,14 @@ class AdminOrUserFragment : CourseworkFragment(), LoginView {
 
     override fun openAdmin(administrator: Administrator) {
         listener.openAdminFragment(administrator)
+    }
+
+    override fun openUser(user: User) {
+        listener.openUserFragment(user)
+    }
+
+    override fun registerUser(login: String) {
+        listener.openRegisterFragment(login)
     }
 
     companion object {

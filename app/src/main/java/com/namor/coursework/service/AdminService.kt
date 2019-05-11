@@ -1,9 +1,6 @@
 package com.namor.coursework.service
 
-import com.namor.coursework.domain.Administrator
-import com.namor.coursework.domain.Film
-import com.namor.coursework.domain.Genre
-import com.namor.coursework.domain.Page
+import com.namor.coursework.domain.*
 import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.Response
@@ -33,5 +30,12 @@ interface AdminService {
 }
 
 interface UserService {
+
+    @GET("users/{login}")
+    fun getUser(@Path("login") login: String): Single<User>
+
+    @POST("users")
+    fun addUser(@Body user: User): Completable
+
 
 }

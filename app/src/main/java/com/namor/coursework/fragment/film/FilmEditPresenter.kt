@@ -49,15 +49,6 @@ class FilmEditPresenter: BasePresenter<FilmEditView>() {
         val admin = App.currentAdmin?.login ?: ""
         val f = film.copy(loginAdmin = admin, id = id)
 
-//        Single.fromCallable {
-//            App.service.adminService?.deleteFilmGenres(id)
-//            App.service.adminService?.updateFilm(id, f)
-//        }.subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe({ complete() }, ::onServiceError)
-//                .let { compositeDisposable += it }
-
-
         val delete = App.service.adminService?.deleteFilmGenres(id)
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
@@ -74,11 +65,6 @@ class FilmEditPresenter: BasePresenter<FilmEditView>() {
         }?.subscribe({ complete() }, ::onServiceError)
                 ?.let { compositeDisposable += it }
 
-//        App.service.adminService?.updateFilm(id, f)
-//                ?.subscribeOn(Schedulers.io())
-//                ?.observeOn(AndroidSchedulers.mainThread())
-//                ?.subscribe({ complete() }, ::onServiceError)
-//                ?.let { compositeDisposable += it }
     }
 
     fun deleteFilm() {
