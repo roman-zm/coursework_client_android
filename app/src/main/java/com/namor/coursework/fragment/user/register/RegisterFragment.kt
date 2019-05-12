@@ -2,6 +2,8 @@ package com.namor.coursework.fragment.user.register
 
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +12,8 @@ import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
 
 import com.namor.coursework.R
+import com.namor.coursework.abstract.AbstractTextWatcher
+import com.namor.coursework.abstract.TextChangedListener
 import kotlinx.android.synthetic.main.fragment_register.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -45,7 +49,15 @@ class RegisterFragment : MvpAppCompatFragment(), RegisterUserView {
         super.onViewCreated(view, savedInstanceState)
         doneButton.setOnClickListener { onDoneClicked() }
 
+        val textWatcher = TextChangedListener { checkInput() }
+        arrayOf(fioInput, emailInput, loginInput)
+                .forEach { it.editText?.addTextChangedListener(textWatcher) }
+
         loginInput.editText?.setText(login)
+
+        setIsValid(false)
+        setEmailError(false)
+        setFioError(false)
     }
 
     private fun onDoneClicked() {
@@ -59,6 +71,46 @@ class RegisterFragment : MvpAppCompatFragment(), RegisterUserView {
 
     override fun back() {
         activity?.onBackPressed()
+    }
+
+    override fun setFioError(fioValid: Boolean) {
+        fioInput.error = when (fioValid) {
+            false -> "Введите имя"
+            true -> null
+        }
+    }
+
+    override fun setEmailError(emailValid: Boolean) {
+        emailInput.error = when (emailValid) {
+            false -> "Введите корректный email"
+            true -> null
+        }
+    }
+
+    override fun setLoginError(loginValid: Boolean) {
+        loginInput.error = when (loginValid) {
+            false -> "Логин занят"
+            true -> null
+        }
+    }
+
+    override fun setIsValid(inputValid: Boolean) {
+        doneButton.isClickable = inputValid
+        doneButton.alpha = when (inputValid) {
+            true -> 1.0F
+            false -> 0.5F
+        }
+    }
+
+    private fun checkInput() {
+        val login = loginInput.editText?.text.toString()
+        presenter.checkLogin(login)
+
+        val fio = fioInput.editText?.text.toString()
+        presenter.checkFio(fio)
+
+        val email = emailInput.editText?.text.toString()
+        presenter.checkEmail(email)
     }
 
     companion object {
