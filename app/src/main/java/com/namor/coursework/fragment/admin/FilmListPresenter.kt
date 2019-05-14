@@ -1,17 +1,14 @@
 package com.namor.coursework.fragment.admin
 
 import com.arellomobile.mvp.InjectViewState
-import com.arellomobile.mvp.MvpPresenter
 import com.namor.coursework.App
 import com.namor.coursework.domain.Film
 import com.namor.coursework.fragment.BasePresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 @InjectViewState
-class AdminPresenter: BasePresenter<AdminView>() {
+class FilmListPresenter: BasePresenter<FilmListView>() {
 
     fun loadFilmList() {
         compositeDisposable += App.service.adminService?.getFilmList()

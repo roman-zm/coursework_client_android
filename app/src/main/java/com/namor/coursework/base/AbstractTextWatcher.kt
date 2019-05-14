@@ -1,4 +1,4 @@
-package com.namor.coursework.abstract
+package com.namor.coursework.base
 
 import android.text.Editable
 import android.text.TextWatcher

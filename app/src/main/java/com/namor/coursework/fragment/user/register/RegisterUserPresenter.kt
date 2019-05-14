@@ -13,6 +13,7 @@ import io.reactivex.schedulers.Schedulers
 @InjectViewState
 class RegisterUserPresenter: MvpPresenter<RegisterUserView>() {
 
+    private var user: User? = null
     private var lastLogin: String = ""
     private val disposable = CompositeDisposable()
 
@@ -23,14 +24,19 @@ class RegisterUserPresenter: MvpPresenter<RegisterUserView>() {
     private val userService = App.service.userService
 
     fun register(login: String, fio: String, email: String, sex: Char) {
-        disposable += App.service.userService?.addUser(
-                User(login, fio, sex, email)
-        )?.subscribeOn(Schedulers.io())
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe(::success, ::error)
+        user = User(login, fio, sex, email)
+        user?.let {
+            disposable += App.service.userService?.addUser(
+                    it
+            )?.subscribeOn(Schedulers.io())
+                    ?.observeOn(AndroidSchedulers.mainThread())
+                    ?.subscribe(::success, ::error)
+        }
     }
 
-    private fun success() {}
+    private fun success() {
+
+    }
 
     private fun error(throwable: Throwable) {
         throwable.printStackTrace()

@@ -8,6 +8,8 @@ import com.namor.coursework.domain.User
 import com.namor.coursework.fragment.admin.AdminFragment
 import com.namor.coursework.fragment.film.FilmFragment
 import com.namor.coursework.fragment.login.AdminOrUserFragment
+import com.namor.coursework.fragment.user.UserFragment
+import com.namor.coursework.fragment.user.film.UserFilmFragment
 import com.namor.coursework.fragment.user.register.RegisterFragment
 
 class MainActivity : AppCompatActivity(), MainListener {
@@ -36,12 +38,22 @@ class MainActivity : AppCompatActivity(), MainListener {
     }
 
     override fun openUserFragment(user: User) {
-
+        App.currentUser = user
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, UserFragment.newInstance(this))
+                .commit()
     }
 
     override fun openRegisterFragment(login: String) {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, RegisterFragment.newInstance(login))
+                .addToBackStack(null)
+                .commit()
+    }
+
+    override fun openUserFilmFragment(film: Film) {
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, UserFilmFragment.newInstance(film))
                 .addToBackStack(null)
                 .commit()
     }
@@ -52,4 +64,5 @@ interface MainListener {
     fun openFilmFragment(film: Film?)
     fun openUserFragment(user: User)
     fun openRegisterFragment(login: String)
+    fun openUserFilmFragment(film: Film)
 }

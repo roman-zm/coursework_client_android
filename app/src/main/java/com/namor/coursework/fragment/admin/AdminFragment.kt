@@ -4,23 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.namor.coursework.MainListener
 import com.namor.coursework.R
-import com.namor.coursework.domain.Film
-import com.namor.coursework.fragment.CourseworkFragment
-import com.namor.coursework.fragment.admin.adapter.FILM
-import com.namor.coursework.fragment.admin.adapter.FilmAdapter
-import com.namor.coursework.fragment.admin.adapter.FilmViewHolder
+import com.namor.coursework.base.AbstractFilmListFragment
 import kotlinx.android.synthetic.main.fragment_admin.*
 
-class AdminFragment : CourseworkFragment(), AdminView {
+class AdminFragment : AbstractFilmListFragment() {
 
-    @InjectPresenter
-    lateinit var presenter: AdminPresenter
-
-    private val adapter = FilmAdapter.newInstance()
+//    @InjectPresenter
+//    override lateinit var filmListPresenter: FilmListPresenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -30,32 +23,27 @@ class AdminFragment : CourseworkFragment(), AdminView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecycler()
+        filmListRecycler = recycler
         addButton.setOnClickListener { listener.openFilmFragment(null) }
-        presenter.loadFilmList()
     }
 
-    private fun initRecycler() {
-        recycler.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        recycler.adapter = adapter.apply {
-            setHolderListener(FILM, object: FilmViewHolder.FilmHolderListener {
-                override fun clicked(pos: Int) {
-                    onFilmClicked(pos)
-                }
-            })
-        }
-    }
+//    private fun initRecycler() {
+//        recycler.layoutManager =
+//                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+//        recycler.adapter = adapter.apply {
+//            setHolderListener(FILM, object: FilmViewHolder.FilmHolderListener {
+//                override fun clicked(pos: Int) {
+//                    onFilmClicked(pos)
+//                }
+//            })
+//        }
+//    }
 
-    private fun onFilmClicked(pos: Int) {
-        val film = adapter.items.getOrNull(pos)
+    override fun onFilmClicked(pos: Int) {
+        val film = getFilm(pos)
         listener.openFilmFragment(film)
     }
 
-    override fun setFilms(films: List<Film>) {
-        adapter.items = films
-        adapter.notifyDataSetChanged()
-    }
 
     companion object {
         /**

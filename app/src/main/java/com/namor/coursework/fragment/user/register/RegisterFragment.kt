@@ -2,8 +2,6 @@ package com.namor.coursework.fragment.user.register
 
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +10,7 @@ import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
 
 import com.namor.coursework.R
-import com.namor.coursework.abstract.AbstractTextWatcher
-import com.namor.coursework.abstract.TextChangedListener
+import com.namor.coursework.base.TextChangedListener
 import kotlinx.android.synthetic.main.fragment_register.*
 
 // TODO: Rename parameter arguments, choose names that match
