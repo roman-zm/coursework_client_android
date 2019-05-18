@@ -129,4 +129,8 @@ class UserFilmPresenter: BasePresenter<UserFilmView>() {
         }
     }
 
+    fun openComments() {
+        viewState.openComments(film)
+    }
+
 }

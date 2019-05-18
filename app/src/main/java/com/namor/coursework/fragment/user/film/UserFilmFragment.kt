@@ -13,10 +13,12 @@ import androidx.core.view.plusAssign
 import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.google.android.material.chip.Chip
+import com.namor.coursework.MainListener
 
 import com.namor.coursework.R
 import com.namor.coursework.domain.Film
 import com.namor.coursework.domain.Genre
+import com.namor.coursework.fragment.CourseworkFragment
 import kotlinx.android.synthetic.main.fragment_user_film.*
 
 private const val FILM = "film"
@@ -26,7 +28,7 @@ private const val FILM = "film"
  * Use the [UserFilmFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class UserFilmFragment : MvpAppCompatFragment(), UserFilmView {
+class UserFilmFragment : CourseworkFragment(), UserFilmView {
 
     @InjectPresenter
     lateinit var presenter: UserFilmPresenter
@@ -46,6 +48,8 @@ class UserFilmFragment : MvpAppCompatFragment(), UserFilmView {
                 RatingBar.OnRatingBarChangeListener { ratingBar, rating, fromUser ->
                     if (fromUser) presenter.onRatingChanged(rating)
                 }
+
+        commentButton.setOnClickListener { presenter.openComments() }
     }
 
     override fun setTitle(name: String) {
@@ -89,7 +93,7 @@ class UserFilmFragment : MvpAppCompatFragment(), UserFilmView {
 
     override fun setMark(mark: Float) {
         filmRatingBar.rating = mark
-        ratingText.text = mark.toString()
+        ratingText.text = ((mark * 10).toInt() / 10.0f).toString()
     }
 
     override fun setCount(count: Int) {
@@ -98,6 +102,10 @@ class UserFilmFragment : MvpAppCompatFragment(), UserFilmView {
 
     override fun setSelfMark(mark: Int) {
         userRatingBar.rating = (mark.toFloat() * 10).toInt() / 10.0f
+    }
+
+    override fun openComments(film: Film) {
+        listener.openComments(film)
     }
 
     companion object {
@@ -109,11 +117,12 @@ class UserFilmFragment : MvpAppCompatFragment(), UserFilmView {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(film: Film) =
+        fun newInstance(mainListener: MainListener, film: Film) =
                 UserFilmFragment().apply {
                     arguments = Bundle().apply {
                         putParcelable(FILM, film)
                     }
+                    listener = mainListener
                 }
     }
 }

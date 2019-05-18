@@ -11,13 +11,20 @@ import com.namor.coursework.service.PageDeserializer
 import com.namor.coursework.service.UserService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
 
 class ServiceHolder {
 //    private val filmListType = object : TypeToken<List<Film>>() {}.type
 
-    private val gson = GsonBuilder().registerTypeAdapter(
-            Page::class.java, PageDeserializer()
-    ).create()
+    private val gson = GsonBuilder().apply {
+        registerTypeAdapter(
+                Page::class.java, PageDeserializer()
+        )
+        registerTypeAdapter(
+                Calendar::class.java, CalendarDeserializer()
+        )
+
+    }.create()
 
     private var retrofit: Retrofit? = null
 

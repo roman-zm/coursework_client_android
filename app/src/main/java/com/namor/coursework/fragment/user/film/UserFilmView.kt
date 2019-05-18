@@ -2,7 +2,9 @@ package com.namor.coursework.fragment.user.film
 
 import com.arellomobile.mvp.MvpView
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy
+import com.arellomobile.mvp.viewstate.strategy.SkipStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
+import com.namor.coursework.domain.Film
 import com.namor.coursework.domain.Genre
 
 interface UserFilmView: MvpView {
@@ -32,4 +34,7 @@ interface UserFilmView: MvpView {
 
     @StateStrategyType(AddToEndSingleStrategy::class)
     fun setSelfMark(mark: Int)
+
+    @StateStrategyType(SkipStrategy::class)
+    fun openComments(film: Film)
 }

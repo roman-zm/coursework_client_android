@@ -59,4 +59,7 @@ interface UserService {
 
     @GET("ratings/search/getAverageForFilm")
     fun getAverageRating(@Query("film") film: Int): Single<Float>
+
+    @GET("comments/search/getAllByFilmOrderByDate")
+    fun getCommentsByFilm(@Query("film") film: Int): Single<Page<Comment>>
 }
