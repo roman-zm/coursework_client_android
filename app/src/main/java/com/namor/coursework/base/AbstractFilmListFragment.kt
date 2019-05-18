@@ -1,7 +1,5 @@
 package com.namor.coursework.base
 
-import android.os.Bundle
-import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -26,12 +24,6 @@ abstract class AbstractFilmListFragment: CourseworkFragment(), FilmListView {
         initRecycler()
         filmListPresenter.loadFilmList()
     }
-
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//        initRecycler()
-//        filmListPresenter.loadFilmList()
-//    }
 
     private fun initRecycler() {
         filmListRecycler?.layoutManager =

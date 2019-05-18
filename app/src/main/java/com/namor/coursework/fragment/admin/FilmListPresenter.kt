@@ -10,11 +10,41 @@ import io.reactivex.schedulers.Schedulers
 @InjectViewState
 class FilmListPresenter: BasePresenter<FilmListView>() {
 
+    private var filmList: List<Film> = listOf()
+    private var filtered: List<Film> = listOf()
+
     fun loadFilmList() {
         compositeDisposable += App.service.adminService?.getFilmList()
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
+                ?.doAfterSuccess(::saveFilmList)
                 ?.subscribe( ::setFilmList, ::onError)
+    }
+
+    private fun onFilter(filter: String) {
+        if (filter.isBlank()) {
+            setFilmList(filmList)
+        } else {
+            filtered = filmList.filter {
+                matchFilter(it, filter.toLowerCase())
+            }
+            setFilmList(filtered)
+        }
+    }
+
+    private fun matchFilter(film: Film, filter: String): Boolean {
+        return when {
+            film.name.containsIgnoreCase(filter) -> true
+            film.director.containsIgnoreCase(filter) -> true
+            film.actors.containsIgnoreCase(filter) -> true
+            film.year.toString().containsIgnoreCase(filter) -> true
+            film.genres.any { it.name.containsIgnoreCase(filter) } -> true
+            else -> false
+        }
+    }
+
+    private fun saveFilmList(films: List<Film>) {
+        this.filmList = films
     }
 
     private fun setFilmList(films: List<Film>) {
@@ -25,6 +55,10 @@ class FilmListPresenter: BasePresenter<FilmListView>() {
         throwable.printStackTrace()
     }
 
+}
+
+private fun String.containsIgnoreCase(contains: String): Boolean {
+    return this.toLowerCase().contains(contains.toLowerCase())
 }
 
 
