@@ -23,4 +23,10 @@ interface UserFilmView: MvpView {
 
     @StateStrategyType(AddToEndSingleStrategy::class)
     fun setSeeButton()
+
+    @StateStrategyType(AddToEndSingleStrategy::class)
+    fun setMark(mark: Float)
+
+    @StateStrategyType(AddToEndSingleStrategy::class)
+    abstract fun setCount(count: Int)
 }

@@ -3,7 +3,6 @@ package com.namor.coursework.service
 import com.namor.coursework.domain.*
 import io.reactivex.Completable
 import io.reactivex.Single
-import retrofit2.Response
 import retrofit2.http.*
 
 interface AdminService {
@@ -46,4 +45,18 @@ interface UserService {
     @POST("purchases")
     fun addPurchase(@Body purchase: Purchase): Completable
 
+    @GET("ratings")
+    fun getRating(
+            @Query("user") user: String,
+            @Query("film") film: Int
+    ): Single<Rating>
+
+    @POST("ratings")
+    fun changeRating(@Body rating: Rating): Completable
+
+    @GET("ratings/search/countAllByFilm")
+    fun getRatingCount(@Query("film") film: Int): Single<Int>
+
+    @GET("ratings/search/getAverageForFilm")
+    fun getAverageRating(@Query("film") film: Int): Single<Float>
 }

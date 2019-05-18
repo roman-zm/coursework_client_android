@@ -4,9 +4,11 @@ import com.arellomobile.mvp.InjectViewState
 import com.namor.coursework.App
 import com.namor.coursework.domain.Film
 import com.namor.coursework.domain.Purchase
+import com.namor.coursework.domain.Rating
 import com.namor.coursework.fragment.BasePresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlin.math.roundToInt
 
 @InjectViewState
 class UserFilmPresenter: BasePresenter<UserFilmView>() {
@@ -25,6 +27,7 @@ class UserFilmPresenter: BasePresenter<UserFilmView>() {
             }
             
             loadPurchase()
+            loadRating()
         }
     }
 
@@ -37,6 +40,41 @@ class UserFilmPresenter: BasePresenter<UserFilmView>() {
                     ?.observeOn(AndroidSchedulers.mainThread())
                     ?.subscribe({ setPurchased(true) }, { setPurchased(false) })
         }
+    }
+
+    private fun loadRating() {
+        loadAverage()
+        loadCount()
+    }
+
+    private fun loadCount() {
+        val user = App.currentUser
+        if (user != null) {
+            compositeDisposable += App.service.userService
+                    ?.getRatingCount(film.id)
+                    ?.subscribeOn(Schedulers.io())
+                    ?.observeOn(AndroidSchedulers.mainThread())
+                    ?.subscribe(::setMarkCount) { setMarkCount(0) }
+        }
+    }
+
+    private fun setMarkCount(count: Int) {
+        viewState.setCount(count)
+    }
+
+    private fun loadAverage() {
+        val user = App.currentUser
+        if (user != null) {
+            compositeDisposable += App.service.userService
+                    ?.getAverageRating(film.id)
+                    ?.subscribeOn(Schedulers.io())
+                    ?.observeOn(AndroidSchedulers.mainThread())
+                    ?.subscribe(::setMark) { setMark(0f) }
+        }
+    }
+
+    private fun setMark(mark: Float) {
+        viewState.setMark(mark)
     }
 
     private fun loadPurchase() {
@@ -53,6 +91,17 @@ class UserFilmPresenter: BasePresenter<UserFilmView>() {
     private fun setPurchased(isPurchased: Boolean) {
         if (isPurchased) viewState.setSeeButton()
         else viewState.setPrice(film.price)
+    }
+
+    fun onRatingChanged(rating: Float) {
+        val user = App.currentUser
+        if (user != null) {
+            compositeDisposable += App.service.userService
+                    ?.changeRating(Rating(user.login, film.id, rating.roundToInt()))
+                    ?.subscribeOn(Schedulers.io())
+                    ?.observeOn(AndroidSchedulers.mainThread())
+                    ?.subscribe()
+        }
     }
 
 }

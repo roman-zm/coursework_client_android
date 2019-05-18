@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RatingBar
 import android.widget.Toast
 import androidx.core.view.plusAssign
 import com.arellomobile.mvp.MvpAppCompatFragment
@@ -42,6 +43,10 @@ class UserFilmFragment : MvpAppCompatFragment(), UserFilmView {
         arguments?.getParcelable<Film>(FILM).let {
             presenter.setFilm(it)
         }
+        ratingBar.onRatingBarChangeListener =
+                RatingBar.OnRatingBarChangeListener { ratingBar, rating, fromUser ->
+                    if (fromUser) presenter.onRatingChanged(rating)
+                }
     }
 
     override fun setTitle(name: String) {
@@ -81,6 +86,14 @@ class UserFilmFragment : MvpAppCompatFragment(), UserFilmView {
             Toast.makeText(context, "Запускается плеер с фильмом", Toast.LENGTH_LONG)
                     .show()
         }
+    }
+
+    override fun setMark(mark: Float) {
+        ratingBar.rating = mark
+    }
+
+    override fun setCount(count: Int) {
+        ratingCount.text = "$count"
     }
 
     companion object {
