@@ -28,5 +28,8 @@ interface UserFilmView: MvpView {
     fun setMark(mark: Float)
 
     @StateStrategyType(AddToEndSingleStrategy::class)
-    abstract fun setCount(count: Int)
+    fun setCount(count: Int)
+
+    @StateStrategyType(AddToEndSingleStrategy::class)
+    fun setSelfMark(mark: Int)
 }

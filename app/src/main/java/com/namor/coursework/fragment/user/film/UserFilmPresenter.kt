@@ -27,6 +27,7 @@ class UserFilmPresenter: BasePresenter<UserFilmView>() {
             }
             
             loadPurchase()
+            loadSelfRating()
             loadRating()
         }
     }
@@ -45,6 +46,29 @@ class UserFilmPresenter: BasePresenter<UserFilmView>() {
     private fun loadRating() {
         loadAverage()
         loadCount()
+    }
+
+    private fun loadSelfRating() {
+        val user = App.currentUser
+        if (user != null) {
+            compositeDisposable += App.service.userService
+                    ?.getRating(user.login, film.id)
+                    ?.subscribeOn(Schedulers.io())
+                    ?.observeOn(AndroidSchedulers.mainThread())
+                    ?.subscribe(
+                            { rating -> setSelfMark(rating.mark) },
+                            { t ->
+                                t.printStackTrace()
+                                setSelfMark(0)
+                            }
+                    )
+        }
+    }
+
+    private fun setSelfMark(mark: Int) {
+        if (mark > 0) {
+            viewState.setSelfMark(mark)
+        }
     }
 
     private fun loadCount() {
@@ -98,6 +122,7 @@ class UserFilmPresenter: BasePresenter<UserFilmView>() {
         if (user != null) {
             compositeDisposable += App.service.userService
                     ?.changeRating(Rating(user.login, film.id, rating.roundToInt()))
+                    ?.doFinally(::loadRating)
                     ?.subscribeOn(Schedulers.io())
                     ?.observeOn(AndroidSchedulers.mainThread())
                     ?.subscribe()

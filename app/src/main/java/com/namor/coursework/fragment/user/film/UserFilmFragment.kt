@@ -17,7 +17,6 @@ import com.google.android.material.chip.Chip
 import com.namor.coursework.R
 import com.namor.coursework.domain.Film
 import com.namor.coursework.domain.Genre
-import com.namor.coursework.fragment.CourseworkFragment
 import kotlinx.android.synthetic.main.fragment_user_film.*
 
 private const val FILM = "film"
@@ -43,7 +42,7 @@ class UserFilmFragment : MvpAppCompatFragment(), UserFilmView {
         arguments?.getParcelable<Film>(FILM).let {
             presenter.setFilm(it)
         }
-        ratingBar.onRatingBarChangeListener =
+        userRatingBar.onRatingBarChangeListener =
                 RatingBar.OnRatingBarChangeListener { ratingBar, rating, fromUser ->
                     if (fromUser) presenter.onRatingChanged(rating)
                 }
@@ -89,11 +88,16 @@ class UserFilmFragment : MvpAppCompatFragment(), UserFilmView {
     }
 
     override fun setMark(mark: Float) {
-        ratingBar.rating = mark
+        filmRatingBar.rating = mark
+        ratingText.text = mark.toString()
     }
 
     override fun setCount(count: Int) {
         ratingCount.text = "$count"
+    }
+
+    override fun setSelfMark(mark: Int) {
+        userRatingBar.rating = mark.toFloat()
     }
 
     companion object {

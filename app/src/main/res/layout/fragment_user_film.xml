@@ -51,7 +51,7 @@
         android:text="Режиссёр, 1958, 01:30"
         app:layout_constraintEnd_toStartOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/filmTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/filmRatingBar" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chipGroup"
@@ -63,7 +63,7 @@
         app:chipSpacingVertical="4dp"
         app:layout_constraintEnd_toStartOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/infoText">
+        app:layout_constraintTop_toBottomOf="@id/actorsText">
 
     </com.google.android.material.chip.ChipGroup>
 
@@ -78,53 +78,97 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <RatingBar
-        android:id="@+id/ratingBar"
+        android:id="@+id/userRatingBar"
         style="@style/Widget.AppCompat.RatingBar.Indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
         android:isIndicator="false"
         android:max="5"
         android:numStars="5"
         android:progress="0"
         android:rating="0"
         android:stepSize="1"
-        app:layout_constraintEnd_toStartOf="@+id/imageView"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
-
-    <TextView
-        android:id="@+id/ratingCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <TextView
         android:id="@+id/actorsText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:text="Актёры"
         app:layout_constraintEnd_toStartOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ratingCount" />
+        app:layout_constraintTop_toBottomOf="@+id/infoText" />
 
     <Button
         android:id="@+id/commentButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:text="Комментировать"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/actorsText" />
+        app:layout_constraintTop_toBottomOf="@+id/userRatingBar" />
+
+    <TextView
+        android:id="@+id/ratingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="4,5"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="@+id/buyOrSeeButton"
+        app:layout_constraintStart_toStartOf="@+id/buyOrSeeButton"
+        app:layout_constraintTop_toTopOf="@+id/barrier" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="из 5"
+        app:layout_constraintEnd_toEndOf="@+id/ratingText"
+        app:layout_constraintStart_toStartOf="@+id/ratingText"
+        app:layout_constraintTop_toBottomOf="@+id/ratingText" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="buyOrSeeButton,chipGroup"
+        />
+
+    <TextView
+        android:id="@+id/ratingCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="46"
+        app:layout_constraintBottom_toBottomOf="@+id/filmRatingBar"
+        app:layout_constraintStart_toEndOf="@+id/filmRatingBar"
+        app:layout_constraintTop_toTopOf="@+id/filmRatingBar" />
+
+    <RatingBar
+        android:id="@+id/filmRatingBar"
+        style="@style/Widget.AppCompat.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filmTitle" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Ваша оценка:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/barrier" />
 </androidx.constraintlayout.widget.ConstraintLayout>

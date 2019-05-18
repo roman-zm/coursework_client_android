@@ -45,7 +45,7 @@ interface UserService {
     @POST("purchases")
     fun addPurchase(@Body purchase: Purchase): Completable
 
-    @GET("ratings")
+    @GET("ratings/search/getByUserAndFilm")
     fun getRating(
             @Query("user") user: String,
             @Query("film") film: Int
