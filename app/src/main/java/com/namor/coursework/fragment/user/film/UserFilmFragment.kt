@@ -97,7 +97,7 @@ class UserFilmFragment : MvpAppCompatFragment(), UserFilmView {
     }
 
     override fun setSelfMark(mark: Int) {
-        userRatingBar.rating = mark.toFloat()
+        userRatingBar.rating = (mark.toFloat() * 10).toInt() / 10.0f
     }
 
     companion object {
