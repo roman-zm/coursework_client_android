@@ -8,4 +8,7 @@ interface FilmCommentsView: MvpView {
     @StateStrategyType(SkipStrategy::class)
     fun finish()
 
+    @StateStrategyType(SkipStrategy::class)
+    fun scrollToBottom()
+
 }

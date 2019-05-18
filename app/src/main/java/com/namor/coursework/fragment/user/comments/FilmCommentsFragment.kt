@@ -6,10 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
 
 import com.namor.coursework.R
+import com.namor.coursework.base.MessageInputPanel
 import com.namor.coursework.domain.Film
 import kotlinx.android.synthetic.main.fragment_film_comments.*
 
@@ -46,8 +48,24 @@ class FilmCommentsFragment : MvpAppCompatFragment(), FilmCommentsView {
         super.onViewCreated(view, savedInstanceState)
         toolbar.setNavigationOnClickListener { finish() }
         recycler.adapter = presenter.adapter
+        recycler.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+            if (oldBottom > bottom) {
+                recycler.post { recycler.scrollToPosition(presenter.adapter.itemCount - 1) }
+            }
+        }
+
+        chatInputPanel.setSendButtonEnabled(true)
+        chatInputPanel.setOnSendClickListener(object: MessageInputPanel.OnSendListener {
+            override fun onSend(message: MessageInputPanel.IMessage) {
+                presenter.sendComment(message)
+            }
+        })
 
         presenter.film = film
+    }
+
+    override fun scrollToBottom() {
+        recycler.post { recycler.scrollToPosition(presenter.adapter.itemCount - 1) }
     }
 
     override fun finish() {

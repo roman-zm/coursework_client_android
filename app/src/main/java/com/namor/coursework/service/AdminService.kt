@@ -62,4 +62,7 @@ interface UserService {
 
     @GET("comments/search/getAllByFilmOrderByDate")
     fun getCommentsByFilm(@Query("film") film: Int): Single<Page<Comment>>
+
+    @POST("comments")
+    fun sendComment(@Body comment: Comment): Completable
 }

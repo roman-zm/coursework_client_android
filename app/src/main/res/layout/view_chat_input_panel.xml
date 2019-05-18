@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="52dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:animateLayoutChanges="true"
+    android:orientation="horizontal">
+
+        <com.namor.coursework.base.MaxHeightScrollView
+            android:layout_gravity="start|center_vertical"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:minHeight="52dp"
+            app:maxHeight="104dp"
+            android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/editText"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="52dp"
+
+                    android:paddingStart="16dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+
+                    android:background="@android:color/white"
+
+                    android:hint="@string/chat_input_hint"
+                    android:inputType="textCapSentences|textMultiLine" />
+
+        </com.namor.coursework.base.MaxHeightScrollView>
+
+        <View
+            android:id="@+id/sendButton"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="8dp"
+            android:layout_gravity="end|center_vertical"
+            android:visibility="gone"
+            android:background="@drawable/ic_send" />
+
+</LinearLayout>
