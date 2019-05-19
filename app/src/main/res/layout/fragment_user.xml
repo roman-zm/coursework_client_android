@@ -15,6 +15,7 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
+        app:menu="@menu/user_fragment_menu"
         app:title="Фильмы"
         app:titleTextColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"

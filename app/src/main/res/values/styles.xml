@@ -7,7 +7,14 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:editTextStyle">@style/Widget.AppCompat.EditText</item>
+
+        <item name="actionBarTheme">@style/AppTheme.Toolbar</item>
     </style>
-    
+
+    <style name="AppTheme.Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="titleTextColor">@android:color/white</item>
+        <item name="android:actionMenuTextColor">@android:color/white</item>
+
+    </style>
 
 </resources>

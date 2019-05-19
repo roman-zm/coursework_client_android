@@ -22,7 +22,7 @@ abstract class AbstractFilmListFragment: CourseworkFragment(), FilmListView {
     set(value) {
         field = value
         initRecycler()
-        filmListPresenter.loadFilmList()
+        if (adapter.items.isNullOrEmpty()) filmListPresenter.loadFilmList()
     }
 
     private fun initRecycler() {

@@ -21,7 +21,7 @@ class FilmListPresenter: BasePresenter<FilmListView>() {
                 ?.subscribe( ::setFilmList, ::onError)
     }
 
-    private fun onFilter(filter: String) {
+    fun onFilter(filter: String) {
         if (filter.isBlank()) {
             setFilmList(filmList)
         } else {

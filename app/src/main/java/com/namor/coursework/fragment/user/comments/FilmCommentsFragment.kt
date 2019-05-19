@@ -46,7 +46,8 @@ class FilmCommentsFragment : MvpAppCompatFragment(), FilmCommentsView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        toolbar.setNavigationOnClickListener { finish() }
+        initToolbar()
+
         recycler.adapter = presenter.adapter
         recycler.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
             if (oldBottom > bottom) {
@@ -62,6 +63,10 @@ class FilmCommentsFragment : MvpAppCompatFragment(), FilmCommentsView {
         })
 
         presenter.film = film
+    }
+
+    private fun initToolbar() {
+        toolbar.setNavigationOnClickListener { finish() }
     }
 
     override fun scrollToBottom() {
