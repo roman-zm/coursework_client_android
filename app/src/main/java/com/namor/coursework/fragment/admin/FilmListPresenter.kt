@@ -3,6 +3,7 @@ package com.namor.coursework.fragment.admin
 import com.arellomobile.mvp.InjectViewState
 import com.namor.coursework.App
 import com.namor.coursework.domain.Film
+import com.namor.coursework.domain.Page
 import com.namor.coursework.fragment.BasePresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -13,15 +14,23 @@ class FilmListPresenter: BasePresenter<FilmListView>() {
     private var filmList: List<Film> = listOf()
     private var filtered: List<Film> = listOf()
 
+    private var filter = ""
+
     fun loadFilmList() {
         compositeDisposable += App.service.adminService?.getFilmList()
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
-                ?.doAfterSuccess(::saveFilmList)
-                ?.subscribe( ::setFilmList, ::onError)
+                ?.subscribe(
+                        { films: Page<Film> ->
+                            saveFilmList(films)
+                            onFilter(filter)
+                        },
+                        ::onError
+                )
     }
 
     fun onFilter(filter: String) {
+        this.filter = filter
         if (filter.isBlank()) {
             setFilmList(filmList)
         } else {

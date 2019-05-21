@@ -15,7 +15,7 @@ interface AdminService {
     @DELETE("films/{id}")
     fun deleteFilm(@Path("id") id: Int): Completable
 
-    @GET("films")
+    @GET("films?size=200")
     fun getFilmList(): Single<Page<Film>>
 
     @GET("administrators/{login}")

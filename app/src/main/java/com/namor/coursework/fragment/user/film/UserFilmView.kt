@@ -37,4 +37,7 @@ interface UserFilmView: MvpView {
 
     @StateStrategyType(SkipStrategy::class)
     fun openComments(film: Film)
+
+    @StateStrategyType(SkipStrategy::class)
+    fun showInfo(description: String)
 }

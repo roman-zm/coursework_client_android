@@ -133,4 +133,8 @@ class UserFilmPresenter: BasePresenter<UserFilmView>() {
         viewState.openComments(film)
     }
 
+    fun showInfo(name: String) {
+        film.genres.firstOrNull { it.name == name }?.let { it.description?.let { it1 -> viewState.showInfo(it1) } }
+    }
+
 }

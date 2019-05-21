@@ -65,8 +65,15 @@ class UserFilmFragment : CourseworkFragment(), UserFilmView {
         genres.forEach {
             chipGroup += Chip(context).apply {
                 text = it.name
+                setOnClickListener { _ ->
+                    presenter.showInfo(it.name)
+                }
             }
         }
+    }
+
+    override fun showInfo(description: String) {
+        Toast.makeText(context, description, Toast.LENGTH_LONG).show()
     }
 
     @SuppressLint("SetTextI18n")
