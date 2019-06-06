@@ -42,8 +42,7 @@ class FilmEditPresenter: BasePresenter<FilmEditView>() {
         viewState.setPredictions(predictions)
     }
 
-    private fun createPredictionsArray(genres: List<Genre>): Array<String> =
-            genres.map { it.name }.toTypedArray()
+    private fun createPredictionsArray(genres: List<Genre>) = genres.map { it.name }.toTypedArray()
 
     private fun updateFilm(id: Int, film: Film) {
         val admin = App.currentAdmin?.login ?: ""
@@ -62,8 +61,7 @@ class FilmEditPresenter: BasePresenter<FilmEditView>() {
                     ?.onErrorResumeNext { update }
         } else {
             update
-        }?.subscribe({ complete() }, ::onServiceError)
-                ?.let { compositeDisposable += it }
+        }?.subscribe({ complete() }, ::onServiceError)?.let { compositeDisposable += it }
 
     }
 
@@ -111,7 +109,6 @@ class FilmEditPresenter: BasePresenter<FilmEditView>() {
                 ?.let { compositeDisposable += it }
     }
 
-    fun getGenresSet(chipValues: List<String>): Set<Genre> =
-            genres.filter { it.name in chipValues }.toSet()
+    fun getGenresSet(chipValues: List<String>) = genres.filter { it.name in chipValues }.toSet()
 
 }

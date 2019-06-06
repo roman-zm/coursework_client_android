@@ -52,15 +52,12 @@ class FilmCommentsPresenter: BasePresenter<FilmCommentsView>() {
     fun sendComment(message: MessageInputPanel.IMessage) {
         val user = App.currentUser
         user?.let {
-            App.service.userService?.sendComment(
+            App.service.userService
+                ?.sendComment(
                     Comment(user = it, film = film?.id ?: -1, text = message.message)
-            )?.subscribeOn(Schedulers.io())
-                    ?.observeOn(AndroidSchedulers.mainThread())
-                    ?.subscribe( {
-                        getComments()
-                    }, { t ->
-                        t.printStackTrace()
-                    } )
+                )?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe( { getComments() }, { t -> t.printStackTrace() } )
         }
     }
 }

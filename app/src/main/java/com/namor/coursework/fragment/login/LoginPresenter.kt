@@ -12,7 +12,7 @@ import io.reactivex.schedulers.Schedulers
 class LoginPresenter: MvpPresenter<LoginView>() {
     fun setHomeUrl(homeUrl: CharSequence?): Boolean {
         val success = App.service.setUrlAndInit(homeUrl.toString())
-        if (!success) viewState.setError("invalid base url: $homeUrl")
+        if (!success) viewState.showMessage("invalid base url: $homeUrl")
         return success
     }
 
@@ -21,9 +21,7 @@ class LoginPresenter: MvpPresenter<LoginView>() {
             App.service.adminService?.getAdmin(it)
                     ?.subscribeOn(Schedulers.io())
                     ?.observeOn(AndroidSchedulers.mainThread())
-                    ?.subscribe(
-                            this::login, this::loginError
-                    )
+                    ?.subscribe(this::adminLogin, this::adminLoginError)
         }
     }
 
@@ -32,33 +30,29 @@ class LoginPresenter: MvpPresenter<LoginView>() {
             App.service.userService?.getUser(login)
                     ?.subscribeOn(Schedulers.io())
                     ?.observeOn(AndroidSchedulers.mainThread())
-                    ?.subscribe(
-                            this::userLogin
-                    ) { userLoginError(it, login) }
-
+                    ?.subscribe(this::userLogin) {
+                        userLoginError(it, login)
+                    }
         }
     }
 
+    private fun adminLogin(administrator: Administrator) {
+        viewState.openAdminScreen(administrator)
+    }
+
     private fun userLogin(user: User) {
-        viewState.setError(user.toString())
-        viewState.openUser(user)
+        viewState.showMessage(user.toString())
+        viewState.openUserScreen(user)
     }
 
     private fun userLoginError(throwable: Throwable, login: String) {
         throwable.printStackTrace()
-        viewState.setError("Пользователь не найден")
+        viewState.showMessage("Пользователь не найден")
         viewState.registerUser(login)
     }
 
-    private fun loginError(throwable: Throwable) {
+    private fun adminLoginError(throwable: Throwable) {
         throwable.printStackTrace()
-        viewState.setError(throwable.localizedMessage)
+        viewState.showMessage(throwable.localizedMessage)
     }
-
-    private fun login(administrator: Administrator) {
-        viewState.setError(administrator.toString())
-        viewState.openAdmin(administrator)
-    }
-
-
 }

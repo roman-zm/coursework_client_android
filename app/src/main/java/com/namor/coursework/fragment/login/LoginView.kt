@@ -8,9 +8,9 @@ import com.namor.coursework.domain.Administrator
 import com.namor.coursework.domain.User
 
 interface LoginView: MvpView {
-    fun setError(s: String)
-    fun openAdmin(administrator: Administrator)
-    fun openUser(user: User)
+    fun showMessage(s: String)
+    fun openAdminScreen(administrator: Administrator)
+    fun openUserScreen(user: User)
 
     @StateStrategyType(SkipStrategy::class)
     fun registerUser(login: String)

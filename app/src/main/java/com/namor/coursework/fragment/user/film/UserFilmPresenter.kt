@@ -66,9 +66,7 @@ class UserFilmPresenter: BasePresenter<UserFilmView>() {
     }
 
     private fun setSelfMark(mark: Int) {
-        if (mark > 0) {
-            viewState.setSelfMark(mark)
-        }
+        if (mark > 0) viewState.setSelfMark(mark)
     }
 
     private fun loadCount() {
@@ -136,5 +134,4 @@ class UserFilmPresenter: BasePresenter<UserFilmView>() {
     fun showInfo(name: String) {
         film.genres.firstOrNull { it.name == name }?.let { it.description?.let { it1 -> viewState.showInfo(it1) } }
     }
-
 }

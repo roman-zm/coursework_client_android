@@ -61,7 +61,7 @@ class RegisterFragment : MvpAppCompatFragment(), RegisterUserView {
         val login = loginInput.editText?.text.toString()
         val fio = fioInput.editText?.text.toString()
         val email = emailInput.editText?.text.toString()
-        val sex = (if (switch1.isChecked) switch1.textOn else switch1.textOff).toString()[0]
+        val sex = if (switch1.isChecked) 'm' else 'ж'
 
         presenter.register(login, fio, email, sex)
     }

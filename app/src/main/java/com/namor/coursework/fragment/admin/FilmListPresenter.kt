@@ -18,15 +18,14 @@ class FilmListPresenter: BasePresenter<FilmListView>() {
 
     fun loadFilmList() {
         compositeDisposable += App.service.adminService?.getFilmList()
-                ?.subscribeOn(Schedulers.io())
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe(
-                        { films: Page<Film> ->
-                            saveFilmList(films)
-                            onFilter(filter)
-                        },
-                        ::onError
-                )
+            ?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribe(
+                { films: Page<Film> ->
+                    saveFilmList(films)
+                    onFilter(filter)
+                }, ::onError
+            )
     }
 
     fun onFilter(filter: String) {
@@ -34,9 +33,7 @@ class FilmListPresenter: BasePresenter<FilmListView>() {
         if (filter.isBlank()) {
             setFilmList(filmList)
         } else {
-            filtered = filmList.filter {
-                matchFilter(it, filter.toLowerCase())
-            }
+            filtered = filmList.filter { matchFilter(it, filter.toLowerCase()) }
             setFilmList(filtered)
         }
     }

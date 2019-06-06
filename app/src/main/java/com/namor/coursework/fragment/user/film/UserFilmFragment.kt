@@ -50,10 +50,12 @@ class UserFilmFragment : CourseworkFragment(), UserFilmView {
                 }
 
         commentButton.setOnClickListener { presenter.openComments() }
+        toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
     }
 
     override fun setTitle(name: String) {
         filmTitle.text = name
+        toolbar.title = name
     }
 
     @SuppressLint("SetTextI18n")

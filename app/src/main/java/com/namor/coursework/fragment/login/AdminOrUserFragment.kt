@@ -50,15 +50,15 @@ class AdminOrUserFragment : CourseworkFragment(), LoginView {
         }
     }
 
-    override fun setError(s: String) {
+    override fun showMessage(s: String) {
         Toast.makeText(activity, s, Toast.LENGTH_LONG).show()
     }
 
-    override fun openAdmin(administrator: Administrator) {
+    override fun openAdminScreen(administrator: Administrator) {
         listener.openAdminFragment(administrator)
     }
 
-    override fun openUser(user: User) {
+    override fun openUserScreen(user: User) {
         listener.openUserFragment(user)
     }
 

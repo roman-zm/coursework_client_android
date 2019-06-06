@@ -69,6 +69,7 @@ class FilmFragment : MvpAppCompatFragment(), FilmEditView {
 
     override fun initForNewFilm() {
         deleteButton.isVisible = false
+        toolbar.title = "Добавить"
         doneButton.setOnClickListener { presenter.uploadFilm(createFilmModel()) }
     }
 
